@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+
+  auctions  Auction[]
+  bids      Bid[]
+
+  wonAuctions Auction[] @relation("AuctionWinner")
+
+  watchlists   Watchlist[]
+  notifications Notification[]
+
+  createdAt DateTime @default(now())
+}
+
+model Auction {
+  id            Int      @id @default(autoincrement())
+  title         String
+  description   String
+
+  image          String?
+  
+  startingPrice Float
+  currentBid    Float
+
+paymentStatus  String    @default("pending")
+paidAt          DateTime?
+
+  endTime       DateTime
+  status        String   @default("active")
+
+  sellerId Int
+  seller   User @relation(fields: [sellerId], references: [id])
+
+  winnerId Int?
+  winner   User? @relation("AuctionWinner", fields: [winnerId], references: [id])
+
+  bids Bid[]
+
+  watchlists Watchlist[]
+
+  createdAt DateTime @default(now())
+}
+
+model Bid {
+  id Int @id @default(autoincrement())
+
+  amount Float
+
+  auctionId Int
+  auction   Auction @relation(fields: [auctionId], references: [id])
+
+  bidderId Int
+  bidder   User @relation(fields: [bidderId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model Watchlist {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  auctionId Int
+  auction   Auction @relation(fields: [auctionId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, auctionId])
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+
+  message String
+
+  isRead Boolean @default(false)
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
