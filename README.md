@@ -1,4 +1,4 @@
-# 🏷️ Online Auction Platform
+# 🏷️ Online Auction Platform 
 
 A full-stack web application that enables users to create, participate in, and manage online auctions in real time. Users can list items for auction, place bids, track auction status, and determine winners automatically when the auction ends.
 
