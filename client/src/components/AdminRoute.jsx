@@ -9,7 +9,7 @@ function AdminRoute({ children }) {
     toast.error("Access denied. Admin only.");
     return <Navigate to="/" />;
   }
-
+ 
   return children;
 }
 
