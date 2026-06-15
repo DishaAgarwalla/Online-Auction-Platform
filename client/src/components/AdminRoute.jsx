@@ -8,7 +8,7 @@ function AdminRoute({ children }) {
   if (!user || user.role !== "admin") {
     toast.error("Access denied. Admin only.");
     return <Navigate to="/" />;
-  }
+  } 
  
   return children;
 }
