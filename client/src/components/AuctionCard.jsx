@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";  
 import { motion } from "framer-motion";
 import { Clock, DollarSign, User, Eye } from "lucide-react";
 
