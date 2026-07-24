@@ -1,75 +1,213 @@
-# 🏷️ Online Auction Platform      
- 
-A full-stack web application that enables users to create, participate in, and manage online auctions in real time. Users can list items for auction, place bids, track auction status, and determine winners automatically when the auction ends.
- 
----
+<div align="center">
 
-## 🚀 Features
+# 🏷️ BidSphere – Online Auction Platform
 
-### 🔐 Authentication & Authorization
-- User registration and login
-- Secure JWT-based authentication
-- Protected routes for authorized users
-- User profile management
+### 🚀 A Full-Stack Real-Time Online Auction Platform
 
-### 🏷️ Auction Management
-- Create new auctions with title, description, image, starting price, and end date
-- View active and completed auctions
-- Edit and manage auction listings
-- Automatic auction closure based on end time
+Buy • Sell • Bid • Win
 
-### 💰 Bidding System
-- Place bids on active auctions
-- Real-time highest bid tracking
-- Bid validation to prevent lower bids
-- Auction winner determination
+🌐 **Live Demo:** https://online-auction-platform-ten.vercel.app/
 
-### 📊 Dashboard
-- View all created auctions
-- Track bidding activity
-- Monitor auction status and results
+💻 **Backend API:** https://online-auction-platform-production.up.railway.app/
 
-### 🎨 Modern User Interface
-- Responsive design for desktop and mobile
-- Intuitive navigation
-- Clean and user-friendly auction experience
+</div>
 
 ---
 
-## 🛠️ Tech Stack
+# 📖 Overview
 
-### Frontend
+**BidSphere** is a modern full-stack online auction platform where users can securely create auctions, place live bids, receive instant updates, and complete payments through Razorpay.
+
+The platform supports real-time bidding using **Socket.IO**, secure authentication with **JWT**, automatic auction closing using scheduled background jobs, and online payments.
+
+---
+
+# ✨ Features
+
+## 🔐 Authentication & Authorization
+
+- User Registration
+- Secure Login
+- JWT Authentication
+- Protected Routes
+- Role-Based Access (User/Admin)
+- User Profile
+
+---
+
+## 🏷️ Auction Management
+
+- Create Auctions
+- Upload Auction Images
+- Edit Auctions
+- Delete Auctions
+- Automatic Auction Expiry
+- Automatic Winner Selection
+- Auction Status (Active / Closed)
+
+---
+
+## 💰 Real-Time Bidding
+
+- Live Bid Placement
+- Highest Bid Validation
+- Prevent Invalid Bids
+- Live Bid Updates using Socket.IO
+- Bid History
+
+---
+
+## ❤️ Watchlist
+
+- Add Auctions to Watchlist
+- Remove from Watchlist
+- View Saved Auctions
+
+---
+
+## 🔔 Notifications
+
+- Real-Time Notifications
+- Auction Closed Notifications
+- Winner Notifications
+- Seller Notifications
+- Watchlist Notifications
+
+---
+
+## 💳 Online Payments
+
+- Razorpay Payment Gateway
+- Secure Payment Verification
+- Payment Status Tracking
+- Winner Payment Flow
+
+---
+
+## 📧 Email Service
+
+Automatic emails are sent for:
+
+- Auction Won
+- Auction Closed
+- Seller Notifications
+
+---
+
+## 📊 Dashboard
+
+### User Dashboard
+
+- Profile Information
+- Total Auctions
+- Total Bids
+- Won Auctions
+- My Auctions
+
+### Admin Dashboard
+
+- Total Users
+- Total Auctions
+- Active Auctions
+- Closed Auctions
+- Total Bids
+- Manage Users
+- Manage Auctions
+
+---
+
+## 🎨 Modern UI
+
+- Responsive Design
+- Beautiful Landing Page
+- Mobile Friendly
+- Smooth Animations
+- Modern Cards
+- Toast Notifications
+
+---
+
+# ⚡ Tech Stack
+
+## Frontend
+
 - React.js
+- Vite
 - React Router
-- Context API
 - Axios
-- CSS
+- Framer Motion
+- React Hot Toast
+- Lucide React
+- Socket.IO Client
+- CSS / Tailwind CSS
 
-### Backend
+---
+
+## Backend
+
 - Node.js
 - Express.js
-- MongoDB
-- Mongoose
-- JWT Authentication
-- bcrypt.js
+- Prisma ORM
+- MySQL
+- JWT
+- bcryptjs
+- Multer
+- Socket.IO
+- Node Cron
+- Nodemailer
+- Razorpay
 
 ---
 
-## 📂 Project Structure
+## Database
 
-```bash
-Online-Auction-Platform/
+- MySQL
+- Prisma ORM
+
+---
+
+## Deployment
+
+### Frontend
+
+- Vercel
+
+### Backend
+
+- Railway
+
+### Database
+
+- Railway MySQL
+
+---
+
+# 📂 Project Structure
+
+```text
+BidSphere/
 │
 ├── client/
-│   ├── src/
 │   ├── public/
+│   ├── src/
+│   │
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── context/
+│   ├── assets/
 │   └── package.json
 │
 ├── server/
+│   ├── config/
 │   ├── controllers/
-│   ├── models/
-│   ├── routes/
 │   ├── middleware/
+│   ├── routes/
+│   ├── jobs/
+│   ├── socket/
+│   ├── services/
+│   ├── uploads/
+│   ├── prisma/
 │   └── package.json
 │
 └── README.md
@@ -77,80 +215,146 @@ Online-Auction-Platform/
 
 ---
 
-## ⚙️ Installation
+# 🔥 Architecture
 
-### Clone the Repository
+```text
+React (Vercel)
+        │
+        ▼
+Express API (Railway)
+        │
+        ▼
+Prisma ORM
+        │
+        ▼
+MySQL Database (Railway)
+
+        │
+        ▼
+Socket.IO
+        │
+Real-Time Bidding
+```
+
+---
+
+# 🚀 Installation
+
+## Clone Repository
 
 ```bash
 git clone https://github.com/DishaAgarwalla/Online-Auction-Platform.git
+
 cd Online-Auction-Platform
 ```
 
-### Install Dependencies
+---
 
-#### Frontend
+## Install Dependencies
+
+### Frontend
 
 ```bash
 cd client
+
 npm install
 ```
 
-#### Backend
+### Backend
 
 ```bash
-cd server
+cd ../server
+
 npm install
 ```
 
 ---
 
-## 🔑 Environment Variables
+# ▶️ Run Locally
 
-Create a `.env` file inside the `server` directory:
-
-```env
-PORT=5000
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
-```
-
----
-
-## ▶️ Run the Application
-
-### Start Backend
+## Backend
 
 ```bash
 cd server
+
 npm run dev
 ```
 
-### Start Frontend
+---
+
+## Frontend
 
 ```bash
 cd client
-npm start
+
+npm run dev
 ```
 
 ---
 
-## 🤝 Contributing
+# 🔒 Security Features
 
-Contributions are welcome! Feel free to fork the repository and submit pull requests.
+- JWT Authentication
+- Password Hashing (bcryptjs)
+- Protected Routes
+- Input Validation
+- Secure Payment Verification
+- Role-Based Authorization
 
 ---
 
-## 📄 License
+# 🤝 Contributing
 
-This project is licensed under the MIT License.
+Contributions are welcome!
+
+1. Fork the repository
+2. Create your feature branch
+
+```bash
+git checkout -b feature/NewFeature
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add New Feature"
+```
+
+4. Push to GitHub
+
+```bash
+git push origin feature/NewFeature
+```
+
+5. Open a Pull Request
 
 ---
 
-## 👩‍💻 Author
+# 📄 License
 
-**Disha Agarwalla**
+This project is licensed under the **MIT License**.
 
-- GitHub: https://github.com/DishaAgarwalla
-- LinkedIn: https://www.linkedin.com/in/disha-agarwalla
+---
 
-⭐ If you found this project useful, consider giving it a star!
+# 👩‍💻 Author
+
+## Disha Agarwalla
+
+
+### GitHub
+
+https://github.com/DishaAgarwalla
+
+### LinkedIn
+
+https://www.linkedin.com/in/disha-agarwalla
+
+---
+
+<div align="center">
+
+### ⭐ If you like this project, don't forget to give it a Star ⭐
+
+Made with ❤️ by **Disha Agarwalla**
+
+</div>
