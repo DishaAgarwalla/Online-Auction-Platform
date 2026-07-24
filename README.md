@@ -4,11 +4,11 @@
 
 ### 🚀 A Full-Stack Real-Time Online Auction Platform
 
-Buy • Sell • Bid • Win
+**Buy • Sell • Bid • Win**
 
-🌐 **Live Demo:** https://online-auction-platform-ten.vercel.app/
-
-💻 **Backend API:** https://online-auction-platform-production.up.railway.app/
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit-success?style=for-the-badge)](https://online-auction-platform-ten.vercel.app/)
+[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Railway-blue?style=for-the-badge)](https://online-auction-platform-production.up.railway.app/)
+[![GitHub Repository](https://img.shields.io/badge/📂_GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/DishaAgarwalla/Online-Auction-Platform)
 
 </div>
 
@@ -341,13 +341,9 @@ This project is licensed under the **MIT License**.
 ## Disha Agarwalla
 
 
-### GitHub
+[![GitHub](https://img.shields.io/badge/GitHub-DishaAgarwalla-181717?style=for-the-badge&logo=github)](https://github.com/DishaAgarwalla)
 
-https://github.com/DishaAgarwalla
-
-### LinkedIn
-
-https://www.linkedin.com/in/disha-agarwalla
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Disha_Agarwalla-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/disha-agarwalla)
 
 ---
 
