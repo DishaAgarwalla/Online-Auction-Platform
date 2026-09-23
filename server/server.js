@@ -19,9 +19,10 @@ const initializeSocket = require("./socket");
 const app = express();
 const server = http.createServer(app);
 
-// Frontend URL for local development
-const allowedOrigin = "http://localhost:5173";
-
+// Frontend URL
+const allowedOrigin =
+  process.env.FRONTEND_URL || "http://localhost:5173";
+  
 // Initialize Socket.IO
 const io = initializeSocket(server);
 
