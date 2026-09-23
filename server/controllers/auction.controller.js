@@ -10,6 +10,24 @@ exports.createAuction = async (req, res) => {
       endTime,
     } = req.body;
 
+    // Convert end time to Date
+    const parsedEndTime = new Date(endTime);
+
+    // Validate end time
+    if (isNaN(parsedEndTime.getTime())) {
+      return res.status(400).json({
+        message: "Invalid end date and time",
+      });
+    }
+
+    // Auction must end in the future
+    if (parsedEndTime <= new Date()) {
+      return res.status(400).json({
+        message:
+          "Auction end date and time must be in the future",
+      });
+    }
+
     const image = req.file
       ? `/uploads/${req.file.filename}`
       : null;
@@ -21,7 +39,7 @@ exports.createAuction = async (req, res) => {
         image,
         startingPrice: Number(startingPrice),
         currentBid: Number(startingPrice),
-        endTime: new Date(endTime),
+        endTime: parsedEndTime,
         sellerId: req.user.id,
       },
     });
@@ -31,11 +49,14 @@ exports.createAuction = async (req, res) => {
       auction,
     });
   } catch (error) {
+    console.error("Create Auction Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 
 // Get All Auctions + Pagination + Search + Filter + Sort
 exports.getAuctions = async (req, res) => {
@@ -142,11 +163,14 @@ exports.getAuctions = async (req, res) => {
       auctions: auctionsWithWatchlist,
     });
   } catch (error) {
+    console.error("Get Auctions Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 
 // Get Single Auction
 exports.getAuctionById = async (req, res) => {
@@ -213,11 +237,14 @@ exports.getAuctionById = async (req, res) => {
       isWatchlisted,
     });
   } catch (error) {
+    console.error("Get Auction Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 
 // Delete Auction
 exports.deleteAuction = async (req, res) => {
@@ -251,11 +278,14 @@ exports.deleteAuction = async (req, res) => {
       message: "Auction deleted successfully",
     });
   } catch (error) {
+    console.error("Delete Auction Error:", error);
+
     res.status(500).json({
       message: error.message,
     });
   }
 };
+
 
 // Close Auction
 exports.closeAuction = async (req, res) => {
@@ -312,6 +342,8 @@ exports.closeAuction = async (req, res) => {
         : null,
     });
   } catch (error) {
+    console.error("Close Auction Error:", error);
+
     res.status(500).json({
       message: error.message,
     });

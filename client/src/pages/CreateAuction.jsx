@@ -1,14 +1,24 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Upload, X, Image as ImageIcon, Calendar, DollarSign, FileText, Tag } from "lucide-react";
+import {
+  Upload,
+  X,
+  Image as ImageIcon,
+  Calendar,
+  DollarSign,
+  FileText,
+  Tag,
+} from "lucide-react";
 import API from "../services/api";
 import toast from "react-hot-toast";
 
 function CreateAuction() {
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState(null);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -26,26 +36,58 @@ function CreateAuction() {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
-      setFormData({ ...formData, image: file });
+      setFormData({
+        ...formData,
+        image: file,
+      });
+
       const reader = new FileReader();
+
       reader.onloadend = () => {
         setPreview(reader.result);
       };
+
       reader.readAsDataURL(file);
     }
   };
 
   const removeImage = () => {
-    setFormData({ ...formData, image: null });
+    setFormData({
+      ...formData,
+      image: null,
+    });
+
     setPreview(null);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.title || !formData.description || !formData.startingPrice || !formData.endTime) {
+
+    // Validate required fields
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.startingPrice ||
+      !formData.endTime
+    ) {
       toast.error("Please fill in all fields");
+      return;
+    }
+
+    // Convert selected local date/time to JavaScript Date
+    const endDate = new Date(formData.endTime);
+
+    // Validate date
+    if (isNaN(endDate.getTime())) {
+      toast.error("Invalid end date and time");
+      return;
+    }
+
+    // Make sure auction ends in the future
+    if (endDate <= new Date()) {
+      toast.error("End date and time must be in the future");
       return;
     }
 
@@ -53,19 +95,43 @@ function CreateAuction() {
 
     try {
       const formDataToSend = new FormData();
+
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("startingPrice", formData.startingPrice);
-      formDataToSend.append("endTime", formData.endTime);
+      formDataToSend.append(
+        "startingPrice",
+        formData.startingPrice
+      );
+
+      // Convert local datetime to ISO format
+      // This preserves the selected date/time correctly
+      formDataToSend.append(
+        "endTime",
+        endDate.toISOString()
+      );
+
       if (formData.image) {
         formDataToSend.append("image", formData.image);
       }
 
-      const res = await API.post("/auctions", formDataToSend);
-      toast.success(res.data.message || "Auction created successfully!");
+      const res = await API.post(
+        "/auctions",
+        formDataToSend
+      );
+
+      toast.success(
+        res.data.message ||
+          "Auction created successfully!"
+      );
+
       navigate("/auctions");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to create auction");
+      console.error("Create Auction Error:", error);
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to create auction"
+      );
     } finally {
       setLoading(false);
     }
@@ -74,22 +140,36 @@ function CreateAuction() {
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="container mx-auto px-4 max-w-3xl">
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl shadow-lg overflow-hidden"
         >
+
+          {/* Header */}
           <div className="bg-gradient-to-r from-indigo-600 to-pink-600 p-6">
-            <h1 className="text-2xl font-bold text-white">Create New Auction</h1>
-            <p className="text-white/90 mt-1">List your item for bidding</p>
+            <h1 className="text-2xl font-bold text-white">
+              Create New Auction
+            </h1>
+
+            <p className="text-white/90 mt-1">
+              List your item for bidding
+            </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <form
+            onSubmit={handleSubmit}
+            className="p-6 space-y-6"
+          >
+
             {/* Title */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Tag className="w-4 h-4 inline mr-1" /> Auction Title
+                <Tag className="w-4 h-4 inline mr-1" />
+                Auction Title
               </label>
+
               <input
                 type="text"
                 name="title"
@@ -104,8 +184,10 @@ function CreateAuction() {
             {/* Description */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                <FileText className="w-4 h-4 inline mr-1" /> Description
+                <FileText className="w-4 h-4 inline mr-1" />
+                Description
               </label>
+
               <textarea
                 name="description"
                 value={formData.description}
@@ -118,11 +200,14 @@ function CreateAuction() {
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
+
               {/* Starting Price */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <DollarSign className="w-4 h-4 inline mr-1" /> Starting Price (₹)
+                  <DollarSign className="w-4 h-4 inline mr-1" />
+                  Starting Price (₹)
                 </label>
+
                 <input
                   type="number"
                   name="startingPrice"
@@ -138,14 +223,17 @@ function CreateAuction() {
               {/* End Time */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  <Calendar className="w-4 h-4 inline mr-1" /> End Date & Time
+                  <Calendar className="w-4 h-4 inline mr-1" />
+                  End Date & Time
                 </label>
+
                 <input
                   type="datetime-local"
                   name="endTime"
                   value={formData.endTime}
                   onChange={handleChange}
                   required
+                  min={new Date().toISOString().slice(0, 16)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
@@ -154,12 +242,21 @@ function CreateAuction() {
             {/* Image Upload */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                <ImageIcon className="w-4 h-4 inline mr-1" /> Item Image (Optional)
+                <ImageIcon className="w-4 h-4 inline mr-1" />
+                Item Image (Optional)
               </label>
+
               <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg hover:border-indigo-500 transition-all duration-200">
+
                 {preview ? (
                   <div className="relative">
-                    <img src={preview} alt="Preview" className="max-h-48 rounded-lg" />
+
+                    <img
+                      src={preview}
+                      alt="Preview"
+                      className="max-h-48 rounded-lg"
+                    />
+
                     <button
                       type="button"
                       onClick={removeImage}
@@ -167,13 +264,19 @@ function CreateAuction() {
                     >
                       <X className="w-4 h-4" />
                     </button>
+
                   </div>
                 ) : (
                   <div className="space-y-1 text-center">
+
                     <Upload className="mx-auto h-12 w-12 text-gray-400" />
+
                     <div className="flex text-sm text-gray-600">
+
                       <label className="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+
                         <span>Upload a file</span>
+
                         <input
                           type="file"
                           name="image"
@@ -181,17 +284,28 @@ function CreateAuction() {
                           accept="image/*"
                           className="sr-only"
                         />
+
                       </label>
-                      <p className="pl-1">or drag and drop</p>
+
+                      <p className="pl-1">
+                        or drag and drop
+                      </p>
+
                     </div>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+
+                    <p className="text-xs text-gray-500">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+
                   </div>
                 )}
+
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Buttons */}
             <div className="flex gap-4 pt-4">
+
               <button
                 type="button"
                 onClick={() => navigate(-1)}
@@ -199,6 +313,7 @@ function CreateAuction() {
               >
                 Cancel
               </button>
+
               <button
                 type="submit"
                 disabled={loading}
@@ -210,7 +325,9 @@ function CreateAuction() {
                   "Create Auction"
                 )}
               </button>
+
             </div>
+
           </form>
         </motion.div>
       </div>

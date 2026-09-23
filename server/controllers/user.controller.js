@@ -126,56 +126,51 @@ exports.changePassword = async (req, res) => {
 };
 
 // =======================
-// Seller Analytics
+// User Analytics
 // =======================
 exports.getAnalytics = async (req, res) => {
   try {
-    const sellerId = req.user.id;
+    const userId = req.user.id;
 
+    // Number of auctions created by this user
     const totalAuctions =
       await prisma.auction.count({
         where: {
-          sellerId,
+          sellerId: userId,
         },
       });
 
+    // Number of active auctions created by this user
     const activeAuctions =
       await prisma.auction.count({
         where: {
-          sellerId,
+          sellerId: userId,
           status: "active",
         },
       });
 
+    // Number of closed auctions created by this user
     const closedAuctions =
       await prisma.auction.count({
         where: {
-          sellerId,
+          sellerId: userId,
           status: "closed",
         },
       });
 
-    const sellerAuctions =
-      await prisma.auction.findMany({
+    // Number of bids placed by this user
+    const totalBids =
+      await prisma.bid.count({
         where: {
-          sellerId,
-        },
-        select: {
-          id: true,
+          bidderId: userId,
         },
       });
 
-    const auctionIds =
-      sellerAuctions.map(
-        (auction) => auction.id
-      );
-
-    const totalBidsReceived =
-      await prisma.bid.count({
+    // Number of auctions won by this user
+    const wonAuctions =
+      await prisma.auction.count({
         where: {
-          auctionId: {
-            in: auctionIds,
-          },
+          winnerId: userId,
         },
       });
 
@@ -183,9 +178,12 @@ exports.getAnalytics = async (req, res) => {
       totalAuctions,
       activeAuctions,
       closedAuctions,
-      totalBidsReceived,
+      totalBids,
+      wonAuctions,
     });
   } catch (error) {
+    console.error("Analytics Error:", error);
+
     res.status(500).json({
       message: error.message,
     });

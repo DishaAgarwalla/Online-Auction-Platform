@@ -19,13 +19,23 @@ const initializeSocket = require("./socket");
 const app = express();
 const server = http.createServer(app);
 
+// Frontend URL for local development
+const allowedOrigin = "http://localhost:5173";
+
 // Initialize Socket.IO
 const io = initializeSocket(server);
 
 // Make io available globally
 app.set("io", io);
 
-app.use(cors());
+// CORS configuration
+app.use(
+  cors({
+    origin: allowedOrigin,
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // Serve uploaded images
@@ -34,11 +44,12 @@ app.use(
   express.static(path.join(__dirname, "uploads"))
 );
 
+// Test route
 app.get("/", (req, res) => {
   res.send("BidSphere API Running 🚀");
 });
 
-// Routes
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/auctions", auctionRoutes);
 app.use("/api/bids", bidRoutes);
@@ -51,8 +62,10 @@ app.use("/api/payments", paymentRoutes);
 // Start Auction Expiry Job
 startAuctionExpiryJob(io);
 
+// Server Port
 const PORT = process.env.PORT || 5000;
 
+// Start Server
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
