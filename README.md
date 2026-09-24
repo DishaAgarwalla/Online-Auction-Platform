@@ -7,8 +7,6 @@
 **Buy • Sell • Bid • Win**
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit-success?style=for-the-badge)](https://online-auction-platform-ten.vercel.app/)
-[![Backend API](https://img.shields.io/badge/⚡_Backend_API-Railway-blue?style=for-the-badge)](https://online-auction-platform-production.up.railway.app/)
-[![GitHub Repository](https://img.shields.io/badge/📂_GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/DishaAgarwalla/Online-Auction-Platform)
 
 </div>
 
@@ -16,9 +14,11 @@
 
 # 📖 Overview
 
-**BidSphere** is a modern full-stack online auction platform where users can securely create auctions, place live bids, receive instant updates, and complete payments through Razorpay.
+**BidSphere** is a full-stack real-time online auction platform that allows users to create auctions, place bids, track auction activity, receive notifications, and complete payments securely.
 
-The platform supports real-time bidding using **Socket.IO**, secure authentication with **JWT**, automatic auction closing using scheduled background jobs, and online payments.
+The application combines a **React frontend**, **Node.js and Express backend**, **MySQL database**, **Prisma ORM**, **Socket.IO for real-time communication**, and **Razorpay for online payments**.
+
+The platform also includes automatic auction expiry, winner selection, user dashboards, watchlists, notifications, authentication, authorization, and administrative functionality.
 
 ---
 
@@ -28,10 +28,12 @@ The platform supports real-time bidding using **Socket.IO**, secure authenticati
 
 - User Registration
 - Secure Login
-- JWT Authentication
+- JWT-based Authentication
+- Password Hashing using bcryptjs
 - Protected Routes
-- Role-Based Access (User/Admin)
+- Role-Based Authorization
 - User Profile
+- Admin Access
 
 ---
 
@@ -41,89 +43,148 @@ The platform supports real-time bidding using **Socket.IO**, secure authenticati
 - Upload Auction Images
 - Edit Auctions
 - Delete Auctions
+- View Auction Details
+- Set Auction Start and End Time
 - Automatic Auction Expiry
 - Automatic Winner Selection
-- Auction Status (Active / Closed)
+- Active / Closed Auction Status
+- Seller and Winner Information
 
 ---
 
 ## 💰 Real-Time Bidding
 
-- Live Bid Placement
+- Place Live Bids
 - Highest Bid Validation
-- Prevent Invalid Bids
-- Live Bid Updates using Socket.IO
+- Minimum Bid Validation
 - Bid History
+- Real-Time Bid Updates
+- Socket.IO Integration
+- Live Auction Room Updates
+- Automatic Highest-Bid Tracking
 
 ---
 
 ## ❤️ Watchlist
 
 - Add Auctions to Watchlist
-- Remove from Watchlist
+- Remove Auctions from Watchlist
 - View Saved Auctions
+- Quickly Access Favourite Auctions
 
 ---
 
 ## 🔔 Notifications
 
-- Real-Time Notifications
-- Auction Closed Notifications
-- Winner Notifications
-- Seller Notifications
-- Watchlist Notifications
+Users receive notifications related to important auction activities such as:
+
+- Auction Closed
+- Auction Won
+- New Auction Activity
+- Seller Updates
+- Bid-Related Events
+
+Notifications are updated in real time using **Socket.IO**.
 
 ---
 
 ## 💳 Online Payments
 
+BidSphere integrates **Razorpay** for payment processing.
+
 - Razorpay Payment Gateway
-- Secure Payment Verification
+- Payment Order Creation
+- Payment Verification
 - Payment Status Tracking
 - Winner Payment Flow
+- Test Mode Payment Support
 
 ---
 
 ## 📧 Email Service
 
-Automatic emails are sent for:
+The backend includes email functionality for auction-related communication.
+
+Emails can be sent for events such as:
 
 - Auction Won
 - Auction Closed
 - Seller Notifications
+- Auction Updates
 
 ---
 
-## 📊 Dashboard
+## 🏆 Won Auctions
 
-### User Dashboard
+Users can view auctions they have won.
 
-- Profile Information
-- Total Auctions
-- Total Bids
-- Won Auctions
-- My Auctions
+The won-auction section provides:
 
-### Admin Dashboard
-
-- Total Users
-- Total Auctions
-- Active Auctions
-- Closed Auctions
-- Total Bids
-- Manage Users
-- Manage Auctions
+- Auction Information
+- Winning Bid
+- Winner Status
+- Payment Status
+- Payment Option
 
 ---
 
-## 🎨 Modern UI
+## ⏱️ Automatic Auction Expiry
 
-- Responsive Design
-- Beautiful Landing Page
-- Mobile Friendly
-- Smooth Animations
-- Modern Cards
-- Toast Notifications
+BidSphere uses scheduled background jobs to automatically check auctions.
+
+When an auction reaches its end time:
+
+1. The auction is automatically closed.
+2. The highest bidder is selected as the winner.
+3. Winner information is stored.
+4. Relevant notifications are created.
+5. Real-time updates are sent using Socket.IO.
+
+---
+
+# 🔁 Auction Workflow
+
+1. User registers or logs in.
+2. User creates an auction.
+3. Other users browse available auctions.
+4. Users place bids.
+5. Bid information is updated in real time.
+6. The highest bid is tracked.
+7. The auction reaches its end time.
+8. The auction is automatically closed.
+9. The highest bidder becomes the winner.
+10. The winner receives a notification.
+11. The winner completes payment through Razorpay.
+12. Payment status is updated.
+
+---
+
+# 🏗️ System Architecture
+
+    React Frontend
+          │
+          │ HTTP / REST API
+          ▼
+    Node.js + Express
+          │
+          ├──────────────► Socket.IO
+          │                    │
+          │                    ▼
+          │              Real-Time Updates
+          │
+          ▼
+      Prisma ORM
+          │
+          ▼
+       MySQL
+          │
+          ▼
+      Aiven Cloud
+
+    Razorpay
+          │
+          ▼
+    Payment Processing
 
 ---
 
@@ -135,11 +196,11 @@ Automatic emails are sent for:
 - Vite
 - React Router
 - Axios
+- Socket.IO Client
 - Framer Motion
 - React Hot Toast
 - Lucide React
-- Socket.IO Client
-- CSS / Tailwind CSS
+- CSS
 
 ---
 
@@ -163,6 +224,7 @@ Automatic emails are sent for:
 
 - MySQL
 - Prisma ORM
+- Aiven Cloud
 
 ---
 
@@ -170,71 +232,110 @@ Automatic emails are sent for:
 
 ### Frontend
 
-- Vercel
+**Vercel**
+
+Live Application:
+
+https://online-auction-platform-ten.vercel.app/
 
 ### Backend
 
-- Railway
+**Render**
+
+Backend API:
+
+https://online-auction-platform-vdbb.onrender.com/
 
 ### Database
 
-- Railway MySQL
+**Aiven MySQL**
+
+### Payments
+
+**Razorpay**
 
 ---
 
 # 📂 Project Structure
 
-```text
-BidSphere/
-│
-├── client/
-│   ├── public/
-│   ├── src/
-│   │
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── context/
-│   ├── assets/
-│   └── package.json
-│
-├── server/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── routes/
-│   ├── jobs/
-│   ├── socket/
-│   ├── services/
-│   ├── uploads/
-│   ├── prisma/
-│   └── package.json
-│
-└── README.md
-```
+    BidSphere/
+    │
+    ├── client/
+    │   ├── public/
+    │   ├── src/
+    │   │
+    │   ├── components/
+    │   ├── pages/
+    │   ├── services/
+    │   ├── context/
+    │   ├── assets/
+    │   └── package.json
+    │
+    ├── server/
+    │   ├── config/
+    │   ├── controllers/
+    │   ├── middleware/
+    │   ├── routes/
+    │   ├── jobs/
+    │   ├── socket/
+    │   ├── services/
+    │   ├── uploads/
+    │   ├── prisma/
+    │   └── package.json
+    │
+    └── README.md
 
 ---
 
-# 🔥 Architecture
+# 🗄️ Database
 
-```text
-React (Vercel)
-        │
-        ▼
-Express API (Railway)
-        │
-        ▼
-Prisma ORM
-        │
-        ▼
-MySQL Database (Railway)
+BidSphere uses **MySQL** with **Prisma ORM**.
 
-        │
-        ▼
-Socket.IO
-        │
-Real-Time Bidding
-```
+The database contains models for major application entities such as:
+
+- User
+- Auction
+- Bid
+- Watchlist
+- Notification
+
+Prisma is used to manage database access and maintain the application's database schema.
+
+---
+
+# 🔌 API & Backend
+
+The backend is built using **Node.js and Express.js**.
+
+It provides REST APIs for:
+
+- Authentication
+- Users
+- Auctions
+- Bids
+- Watchlists
+- Notifications
+- Payments
+- Admin Operations
+- Dashboard Data
+
+The backend also provides a Socket.IO server for real-time application events.
+
+---
+
+# 🔒 Security Features
+
+- JWT Authentication
+- Password Hashing using bcryptjs
+- Protected Routes
+- Role-Based Authorization
+- Authentication Middleware
+- Secure Payment Verification
+- Environment Variables for Sensitive Configuration
+- CORS Configuration
+- Input Validation
+
+Sensitive credentials such as database passwords, JWT secrets, Razorpay secrets, and email credentials are stored using environment variables and are not committed to the repository.
 
 ---
 
@@ -242,91 +343,175 @@ Real-Time Bidding
 
 ## Clone Repository
 
-```bash
-git clone https://github.com/DishaAgarwalla/Online-Auction-Platform.git
+    git clone https://github.com/DishaAgarwalla/Online-Auction-Platform.git
 
-cd Online-Auction-Platform
-```
+    cd Online-Auction-Platform
 
 ---
 
-## Install Dependencies
+# 📦 Install Dependencies
 
-### Frontend
+## Frontend
 
-```bash
-cd client
+    cd client
 
-npm install
-```
+    npm install
 
-### Backend
+---
 
-```bash
-cd ../server
+## Backend
 
-npm install
-```
+    cd ../server
+
+    npm install
 
 ---
 
 # ▶️ Run Locally
 
-## Backend
+## Start Backend
 
-```bash
-cd server
+    cd server
 
-npm run dev
-```
+    npm run dev
 
----
+The backend runs locally on:
 
-## Frontend
-
-```bash
-cd client
-
-npm run dev
-```
+http://localhost:5000
 
 ---
 
-# 🔒 Security Features
+## Start Frontend
 
-- JWT Authentication
-- Password Hashing (bcryptjs)
-- Protected Routes
-- Input Validation
-- Secure Payment Verification
-- Role-Based Authorization
+Open another terminal:
+
+    cd client
+
+    npm run dev
+
+The frontend runs locally on:
+
+http://localhost:5173
+
+---
+
+# 🧪 Testing
+
+BidSphere can be tested locally using the development environment.
+
+The main functionality to test includes:
+
+- User Registration
+- User Login
+- Creating Auctions
+- Viewing Auctions
+- Placing Bids
+- Real-Time Bid Updates
+- Watchlist
+- Notifications
+- Auction Expiry
+- Winner Selection
+- Won Auctions
+- Razorpay Test Payments
+- Dashboard Statistics
+- Admin Functionality
+
+For payment testing, use **Razorpay Test Mode** and Razorpay's official test credentials rather than real payment details.
+
+---
+
+# 🌐 Production Deployment
+
+The current production architecture uses:
+
+    Vercel
+       │
+       ▼
+    React Frontend
+       │
+       ▼
+    Render
+       │
+       ▼
+    Node.js + Express Backend
+       │
+       ▼
+    Prisma ORM
+       │
+       ▼
+    Aiven MySQL
+
+Additional services:
+
+    Socket.IO
+        │
+        ▼
+    Real-Time Communication
+
+    Razorpay
+        │
+        ▼
+    Payment Processing
+
+---
+
+# 🔗 Live Links
+
+### 🌐 Frontend
+
+https://online-auction-platform-ten.vercel.app/
+
+### ⚡ Backend API
+
+https://online-auction-platform-vdbb.onrender.com/
+
+### 📂 GitHub Repository
+
+https://github.com/DishaAgarwalla/Online-Auction-Platform
+
+---
+
+# 🛠️ Future Improvements
+
+Possible future enhancements include:
+
+- Advanced Search and Filtering
+- Category-Based Auctions
+- Improved Auction Analytics
+- Advanced Admin Analytics
+- Image Optimization
+- Cloud File Storage
+- Enhanced Notification System
+- Improved Mobile Experience
+- Auction Recommendation System
+- More Payment Options
+- Enhanced Security
+- Automated Testing
+- CI/CD Pipeline
 
 ---
 
 # 🤝 Contributing
 
-Contributions are welcome!
+Contributions are welcome.
 
-1. Fork the repository
-2. Create your feature branch
+1. Fork the repository.
 
-```bash
-git checkout -b feature/NewFeature
-```
+2. Create a new feature branch.
 
-3. Commit your changes
+    git checkout -b feature/NewFeature
 
-```bash
-git commit -m "Add New Feature"
-```
+3. Make your changes.
 
-4. Push to GitHub
+4. Commit your changes.
 
-```bash
-git push origin feature/NewFeature
-```
+    git commit -m "Add New Feature"
 
-5. Open a Pull Request
+5. Push the branch.
+
+    git push origin feature/NewFeature
+
+6. Open a Pull Request.
 
 ---
 
@@ -340,17 +525,22 @@ This project is licensed under the **MIT License**.
 
 ## Disha Agarwalla
 
+Full-Stack Developer
 
-[![GitHub](https://img.shields.io/badge/GitHub-DishaAgarwalla-181717?style=for-the-badge&logo=github)](https://github.com/DishaAgarwalla)
+### GitHub
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Disha_Agarwalla-0077B5?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/disha-agarwalla)
+https://github.com/DishaAgarwalla
+
+### LinkedIn
+
+https://www.linkedin.com/in/disha-agarwalla
 
 ---
 
 <div align="center">
 
-### ⭐ If you like this project, don't forget to give it a Star ⭐
+### ⭐ If you found BidSphere useful, consider giving the repository a Star ⭐
 
-Made with ❤️ by **Disha Agarwalla**
+**Made with ❤️ by Disha Agarwalla**
 
 </div>
